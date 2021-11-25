@@ -5,8 +5,15 @@ const app = express();
 
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
-var __dirname = "/Users/auchie/Projects/my-app/"
+var __dirname = "/home/centos/Projects/adhd_todos"
 
+const fs = require('fs');
+const https = require('https');
+
+const options = {
+  cert: fs.readFileSync('/etc/letsencrypt/live/achalagarwal.com/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/achalagarwal.com/privkey.pem')
+};
 
 var Datastore = require('nedb')
     , todos_db = new Datastore({ filename: 'todos', autoload: true });
@@ -59,6 +66,6 @@ app.get('/*', function (req, res) {
 });
 
 
-app.listen(PORT, () => {
+https.createServer(options, app).listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
