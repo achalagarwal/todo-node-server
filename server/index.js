@@ -39,6 +39,19 @@ app.post("/todo/archive", jsonParser, (req, res) => {
         archived_db.insert({ body: todo, created_at: new Date() });
         todos_db.update({ body: todo }, {}, {}, function (err, numReplaced) { });
     })
+
+    res.json({ "ok": `${todos.length} todo(s) archived` });
+})
+
+app.post("/todo/unarchive", jsonParser, (req, res) => {
+    const todos = req.body;
+
+    todos.forEach(todo => {
+        todos_db.insert({ body: todo, created_at: new Date() });
+        archived_db.update({ body: todo }, {}, {}, function (err, numReplaced) { });
+    })
+
+    res.json({ "ok": `${todos.length} todo(s) unarchived` });
 })
 
 app.post("/todo/add", jsonParser, (req, res) => {
